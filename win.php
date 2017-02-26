@@ -1,3 +1,7 @@
+<?php
+    header( "refresh:5;url=index.php" );
+?>
+
 <!DOCTYPE html>
 <html>
     <head>

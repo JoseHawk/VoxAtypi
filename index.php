@@ -1,6 +1,7 @@
 <?php session_start();
 
     $_SESSION['question_number']=0;
+    $_SESSION['correct_answers']=0;
 
 ?>
 <!DOCTYPE html>
