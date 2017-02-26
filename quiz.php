@@ -11,6 +11,7 @@
     
     include 'includes/db.php';
     
+    $show_panel = false;
     $diff = $_GET['diff'];
     $button_a = 'class="answer-a"';
     $button_b = 'class="answer-b"';
@@ -28,20 +29,20 @@
     $run_sql = mysqli_query($conn, $sel_sql);
     $array = mysqli_fetch_array($run_sql);
     
+    //If the person failed
+    if($_SESSION['correct_answers'] == -1){
+        header('Location: loose.php');
+    }
+    
     //If there is not more questions
-    if(empty($array)){
-        
-        if($_SESSION['correct_answers'] >= (($_SESSION['question_number']-1)/2)){
-            header('Location: win.php');
-        }else{
-            header('Location: loose.php');
-        }
-        header( "refresh:0;url=index.php" );
+    if(empty($array) && $_SESSION['correct_answers']!= -1){
+        header('Location: win.php');
     }
 
     // If there was a post
     if(isset($_POST['submit'])){
         
+        $show_panel = true;
         $_SESSION['question_number']++;
         $button_a = 'class="answer-a" disabled';
         $button_b = 'class="answer-b" disabled';
@@ -50,6 +51,8 @@
         
         if ($_POST['submit'] == $array['correct_answer']){
             $_SESSION['correct_answers']++;
+        }else{
+            $_SESSION['correct_answers'] = -1;
         }
         
         switch($_POST['submit']){
@@ -95,7 +98,9 @@
         <title>VoxAtypi</title>
         
         <meta name="viewport" content="width=device.width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, miminum-scale=1.0">
-		
+	<style>
+            @font-face { font-family: Glacial; src: url('bootstrap/fonts/Glacial.otf'); } 
+        </style>
         <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="quiz.css">
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
@@ -124,7 +129,7 @@
             <!-- Center elements -->
             <div class="row">
                 <div class="question">
-                    <?php echo $array['question_text']; ?>
+                    <p class="center-text"><?php echo $array['question_text']; ?> </p>
                 </div>
             </div>
             <div class="row">
@@ -135,28 +140,40 @@
             
             <!-- Bottom elements -->
             <div class="row">
+                <?php  if($show_panel == true) : ?>
+                
+                    <div class="col-md-3 explanation">
+                        <div class="explanation-dialog">
+                            <p class="center-text"><?php echo $array['question_text']; ?> </p>
+                        </div>
+                        <img class="explanation-img" src="img/vox_explicacion.png">
+                    </div>
+                
+                <?php endif; ?>
+
                 <div class="question-answers">
-                    
+
                     <form class="form-horizontal" action="quiz.php?diff=easy" method="POST" role="form">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 center-button-text">
                                 <button <?php echo $button_a; ?> type="submit" name="submit" id="submit" value="a"><?php echo $array['answer_a']; ?></button>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 center-button-text">
                                 <button <?php echo $button_b; ?> type="submit" name="submit" id="submit" value="b"><?php echo $array['answer_b']; ?></button>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 center-button-text">
                                 <button <?php echo $button_c; ?> type="submit" name="submit" id="submit" value="c"><?php echo $array['answer_c']; ?></button>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 center-button-text">
                                 <button <?php echo $button_d; ?> type="submit" name="submit" id="submit" value="d"><?php echo $array['answer_d']; ?></button>
                             </div>
                         </div>
                     </form>
-                    
+
                 </div>
+           
             </div>
         </div>
     </body>

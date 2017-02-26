@@ -20,10 +20,10 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 center-elements-left">
-                    <a href="quiz.php?diff=easy"><img class="buttons" src="img/facile.png"></a>
+                    <a href="quiz.php?diff=easy"><img class="buttons" src="img/questions-gen-v2.png"></a>
                 </div>
                 <div class="col-md-6 center-elements-right">
-                    <a href="quiz.php?diff=hard"><img class="buttons" src="img/difiicle.png"></a>
+                    <a href="quiz.php?diff=hard"><img class="buttons" src="img/questions-tech-v2.png"></a>
                 </div>
             </div>
         </div>
